@@ -48,6 +48,7 @@ class QtDesigner(QMainWindow, form_class):
         time_msg = "Current Time : " + text_time
         self.statusbar.showMessage(time_msg)
 
+    # 텍스트 자동 완성
     def account_changed(self, info):
         self.info = self.lineEdit.text()
     def account_changed_2(self, info_2):
@@ -73,11 +74,8 @@ class QtDesigner(QMainWindow, form_class):
     def account_changed_12(self, info_12):
         self.info_12 = self.lineEdit_12.text()
 
+    # Check 버튼 클릭
     def check(self):
-        #print(self.name)
-        #myname = self.name
-        #print(myname)
-
         driver = webdriver.PhantomJS('/Users/paramount/Downloads/phantomjs/bin/phantomjs')
         driver.get('https://okky.kr/user/register')
 
