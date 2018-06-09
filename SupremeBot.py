@@ -76,28 +76,50 @@ class QtDesigner(QMainWindow, form_class):
 
     # Check 버튼 클릭
     def check(self):
-        driver = webdriver.PhantomJS('/Users/paramount/Downloads/phantomjs/bin/phantomjs')
-        driver.get('https://okky.kr/user/register')
+        payment = webdriver.PhantomJS('/Users/paramount/Downloads/phantomjs/bin/phantomjs')
+        payment.get('https://www.supremenewyork.com/shop')
 
-        assert 'OKKY' in driver.title
+        assert 'Supreme' in payment.title
 
-        input_element = driver.find_element_by_name('username')
-        input_element.send_keys(self.info)
+        name = payment.find_element_by_name("order[billing_name]")
+        name.send_keys(self.info)
 
-        input_element = driver.find_element_by_name('password')
-        input_element.send_keys(self.info_2)
+        email = payment.find_element_by_name("order[email]")
+        email.send_keys(self.info_2)
 
-        input_element = driver.find_element_by_name('person.email')
-        input_element.send_keys(self.info_3)
+        tel = payment.find_element_by_name("order[tel]")
+        tel.send_keys(self.info_3)
 
-        input_element = driver.find_element_by_name('person.fullName')
-        input_element.send_keys(self.info_4)
+        address = payment.find_element_by_name("order[billing_address]")
+        address.send_keys(self.info_4)
 
-        input_element = driver.find_element_by_name('avatar.nickname')
-        input_element.send_keys(self.info_5)
+        city = payment.find_element_by_name("order[billing_city]")
+        city.send_keys(self.info_5)
 
-        driver.save_screenshot('search_results.png')
+        postcode = payment.find_element_by_name("order[billing_zip]")
+        postcode.send_keys(self.info_6)
 
+        postcode = Select(payment.find_element_by_name("order[billing_country]"))
+        postcode.select_by_visible_text(self.info_7)
+
+        cardtype = Select(payment.find_element_by_name("credit_card[type]"))
+        cardtype.select_by_visible_text(self.info_8)
+
+        cardnumber = payment.find_element_by_name("credit_card[cnb]")
+        cardnumber.send_keys(self.info_9)
+
+        month = Select(payment.find_element_by_name("credit_card[month]"))
+        month.select_by_visible_text(self.info_10)
+
+        year = Select(payment.find_element_by_name("credit_card[year]"))
+        year.select_by_visible_text(self.info_11)
+
+        cvv = payment.find_element_by_name("credit_card[vval]")
+        cvv.send_keys(self.info_12)
+
+        payment.find_element_by_class_name("terms").click()
+
+        payment.save_screenshot('search_results.png')
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
