@@ -19,6 +19,10 @@ class QtDesigner(QMainWindow, form_class):
 
         self.checkBox.clicked.connect(self.bypass_ip)
 
+        self.pushButton.clicked.connect(self.check)
+        self.pushButton_2.clicked.connect(self.search)
+        self.pushButton_3.clicked.connect(self.one_shot)
+
         self.lineEdit.textChanged.connect(self.account_changed)
         self.lineEdit_2.textChanged.connect(self.account_changed_2)
         self.lineEdit_3.textChanged.connect(self.account_changed_3)
@@ -31,7 +35,6 @@ class QtDesigner(QMainWindow, form_class):
         self.lineEdit_10.textChanged.connect(self.account_changed_10)
         self.lineEdit_11.textChanged.connect(self.account_changed_11)
         self.lineEdit_12.textChanged.connect(self.account_changed_12)
-        self.pushButton.clicked.connect(self.check)
 
     # 현재 시간 표시
     def timeout(self):
@@ -44,9 +47,18 @@ class QtDesigner(QMainWindow, form_class):
     def bypass_ip(self):
         if self.checkBox.isChecked():
             service_args = [ '--proxy=localhost:9150', '--proxy-type=socks5', ]
-            bypass = webdriver.PhantomJS(executable_path='/Users/paramount/Downloads/phantomjs/bin/phantomjs', service_args=service_args)
-            #bypass.get('https://www.supremenewyork.com/shop')
-            #bypass.save_screenshot('search_results.png')
+            website = webdriver.PhantomJS(executable_path='/Users/paramount/Downloads/phantomjs/bin/phantomjs', service_args=service_args)
+            #website.get('https://www.supremenewyork.com/shop')
+            #website.save_screenshot('search_results.png')
+
+    # Search 버튼 클릭
+    def search(website, category, keywords, color):
+        website.get("http://www.supremenewyork.com/shop/all/" + category)
+        links = website.find_elements_by_class_name("name-link")
+
+    # 원 샷 버튼 클릭
+    def one_shot(self):
+        pass
 
     # 텍스트 자동 완성
     def account_changed(self, info):
@@ -76,50 +88,50 @@ class QtDesigner(QMainWindow, form_class):
 
     # Check 버튼 클릭
     def check(self):
-        payment = webdriver.PhantomJS('/Users/paramount/Downloads/phantomjs/bin/phantomjs')
-        payment.get('https://www.supremenewyork.com/shop')
+        website = webdriver.PhantomJS('/Users/paramount/Downloads/phantomjs/bin/phantomjs')
+        website.get('https://www.supremenewyork.com/shop')
 
-        assert 'Supreme' in payment.title
+        assert 'Supreme' in website.title
 
-        name = payment.find_element_by_name("order[billing_name]")
+        name = website.find_element_by_name("order[billing_name]")
         name.send_keys(self.info)
 
-        email = payment.find_element_by_name("order[email]")
+        email = website.find_element_by_name("order[email]")
         email.send_keys(self.info_2)
 
-        tel = payment.find_element_by_name("order[tel]")
+        tel = website.find_element_by_name("order[tel]")
         tel.send_keys(self.info_3)
 
-        address = payment.find_element_by_name("order[billing_address]")
+        address = website.find_element_by_name("order[billing_address]")
         address.send_keys(self.info_4)
 
-        city = payment.find_element_by_name("order[billing_city]")
+        city = website.find_element_by_name("order[billing_city]")
         city.send_keys(self.info_5)
 
-        postcode = payment.find_element_by_name("order[billing_zip]")
+        postcode = website.find_element_by_name("order[billing_zip]")
         postcode.send_keys(self.info_6)
 
-        postcode = Select(payment.find_element_by_name("order[billing_country]"))
+        postcode = Select(website.find_element_by_name("order[billing_country]"))
         postcode.select_by_visible_text(self.info_7)
 
-        cardtype = Select(payment.find_element_by_name("credit_card[type]"))
+        cardtype = Select(website.find_element_by_name("credit_card[type]"))
         cardtype.select_by_visible_text(self.info_8)
 
-        cardnumber = payment.find_element_by_name("credit_card[cnb]")
+        cardnumber = website.find_element_by_name("credit_card[cnb]")
         cardnumber.send_keys(self.info_9)
 
-        month = Select(payment.find_element_by_name("credit_card[month]"))
+        month = Select(website.find_element_by_name("credit_card[month]"))
         month.select_by_visible_text(self.info_10)
 
-        year = Select(payment.find_element_by_name("credit_card[year]"))
+        year = Select(website.find_element_by_name("credit_card[year]"))
         year.select_by_visible_text(self.info_11)
 
-        cvv = payment.find_element_by_name("credit_card[vval]")
+        cvv = website.find_element_by_name("credit_card[vval]")
         cvv.send_keys(self.info_12)
 
-        payment.find_element_by_class_name("terms").click()
+        website.find_element_by_class_name("terms").click()
 
-        payment.save_screenshot('search_results.png')
+        #website.save_screenshot('search_results.png')
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
