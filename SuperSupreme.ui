@@ -7,15 +7,15 @@
     <x>0</x>
     <y>0</y>
     <width>506</width>
-    <height>578</height>
+    <height>556</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>SuperSupreme v0.2</string>
+   <string>SuperSupreme v0.3</string>
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>pizza.png</normaloff>pizza.png</iconset>
+    <normaloff>image/pizza.png</normaloff>image/pizza.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QGroupBox" name="groupBox">
@@ -313,6 +313,12 @@
         <height>21</height>
        </rect>
       </property>
+      <property name="inputMask">
+       <string/>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
      </widget>
      <widget class="QLineEdit" name="lineEdit_11">
       <property name="geometry">
@@ -348,10 +354,6 @@
       <string>2. Check</string>
      </property>
     </widget>
-    <zorder>groupBox_2</zorder>
-    <zorder>groupBox_3</zorder>
-    <zorder>label_7</zorder>
-    <zorder>pushButton</zorder>
    </widget>
    <widget class="QGroupBox" name="groupBox_4">
     <property name="geometry">
@@ -386,7 +388,7 @@
      </item>
      <item>
       <property name="text">
-       <string>tops/sweaters</string>
+       <string>tops_sweaters</string>
       </property>
      </item>
      <item>
@@ -497,41 +499,6 @@
       <string>Size</string>
      </property>
     </widget>
-    <widget class="QComboBox" name="comboBox_2">
-     <property name="geometry">
-      <rect>
-       <x>80</x>
-       <y>150</y>
-       <width>121</width>
-       <height>22</height>
-      </rect>
-     </property>
-     <item>
-      <property name="text">
-       <string>Small</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Medium</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Large</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Xlarge</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>None</string>
-      </property>
-     </item>
-    </widget>
     <widget class="QPushButton" name="pushButton_2">
      <property name="geometry">
       <rect>
@@ -543,6 +510,16 @@
      </property>
      <property name="text">
       <string>1. Search</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_15">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>150</y>
+       <width>121</width>
+       <height>21</height>
+      </rect>
      </property>
     </widget>
    </widget>
@@ -611,16 +588,6 @@
      </property>
     </widget>
    </widget>
-  </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>506</width>
-     <height>26</height>
-    </rect>
-   </property>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
