@@ -8,7 +8,7 @@ from selenium.webdriver.common.keys import Keys
 
 form_class = uic.loadUiType("SuperSupreme.ui")[0]
 
-class QtDesigner(QMainWindow, form_class):
+class GetSupreme(QMainWindow, form_class):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
@@ -37,28 +37,29 @@ class QtDesigner(QMainWindow, form_class):
             #website.get('https://www.supremenewyork.com/shop')
             #website.save_screenshot('search_results.png')
 
+    """
     # 찾고자 하는 물품 키워드 검색
     def SearchKeyword(keywords, texts):
         for i in keywords:
             if i not in texts:
                 return False
         return True
+    """
 
     # Search 버튼 클릭
     def search(self):
         category = self.comboBox.currentText()
         keyword = self.lineEdit_13.text()
         color = self.lineEdit_14.text()
-        size = self.comboBox_2.currentText()
+        size = self.lineEdit_15.text()
 
         website = webdriver.PhantomJS('/Users/paramount/Downloads/phantomjs/bin/phantomjs')
-        website.get('https://www.supremenewyork.com/shop')
+        website.get("http://www.supremenewyork.com/shop/all/" + category)
 
         assert 'Supreme' in website.title
 
-        website.get("http://www.supremenewyork.com/shop/all/" + category)
         link = website.find_elements_by_class_name("name-link")
-
+        """
         i = 0
         while i < len(link):
             if (SearchKeyword(keywords, link[i].text) & (color in link[i+1].text)):
@@ -68,7 +69,7 @@ class QtDesigner(QMainWindow, form_class):
                 return True
             i += 2
         return False
-
+        """
     	choose_a_size = Select(website.find_element_by_id('size'))
     	choose_a_size.select_by_visible_text(self.size)
     	sleep(0.5)
@@ -83,11 +84,6 @@ class QtDesigner(QMainWindow, form_class):
 
     # Check 버튼 클릭
     def check(self):
-        #website = webdriver.PhantomJS('/Users/paramount/Downloads/phantomjs/bin/phantomjs')
-        #website.get('https://www.supremenewyork.com/shop')
-
-        #assert 'Supreme' in website.title
-
         name = self.lineEdit.text()
         email = self.lineEdit_2.text()
         tel = self.lineEdit_3.text()
