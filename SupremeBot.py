@@ -59,28 +59,30 @@ class GetSupreme(QMainWindow, form_class):
         assert 'Supreme' in website.title
 
         link = website.find_elements_by_class_name("name-link")
-        """
-        i = 0
-        while i < len(link):
-            if (SearchKeyword(keywords, link[i].text) & (color in link[i+1].text)):
-                #print("Texts : " + link[i].text)
-                #print("Color : " + link[i+1].text)
-                link[i].click()
-                return True
-            i += 2
-        return False
-        """
-    	choose_a_size = Select(website.find_element_by_id('size'))
-    	choose_a_size.select_by_visible_text(self.size)
-    	sleep(0.5)
 
-    	add_to_basket = website.find_element_by_name("commit")
-    	add_to_basket.click()
-    	sleep(0.5)
 
-    	checkout = website.find_element_by_xpath('/html/body/div[2]/div/div[1]/div/a[2]')
-    	checkout.click()
-    	sleep(0.5)
+#        i = 0
+#        while i < len(link):
+#            if (SearchKeyword(keywords, link[i].text) & (color in link[i+1].text)):
+#                #print("Texts : " + link[i].text)
+#                #print("Color : " + link[i+1].text)
+#                link[i].click()
+#                return True
+#            i += 2
+#        return False
+        
+
+    #   choose_a_size = Select(website.find_element_by_id('size'))
+    #	choose_a_size.select_by_visible_text(self.size)
+    #	sleep(0.5)
+
+    #	add_to_basket = website.find_element_by_name("commit")
+    #	add_to_basket.click()
+    #	sleep(0.5)
+
+    #	checkout = website.find_element_by_xpath('/html/body/div[2]/div/div[1]/div/a[2]')
+    #	checkout.click()
+    #	sleep(0.5)
 
     # Check 버튼 클릭
     def check(self):
@@ -145,8 +147,8 @@ class GetSupreme(QMainWindow, form_class):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    QtDesigner = QtDesigner()
-    QtDesigner.show()
+    GetSupreme = GetSupreme()
+    GetSupreme.show()
     app.exec_()
 
 """
