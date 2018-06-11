@@ -3,7 +3,7 @@ from selenium import webdriver
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5 import uic
-import BotAccount
+from time import sleep
 from selenium.webdriver.common.keys import Keys
 
 form_class = uic.loadUiType("SuperSupreme.ui")[0]
@@ -18,23 +18,9 @@ class QtDesigner(QMainWindow, form_class):
         self.timer.timeout.connect(self.timeout)
 
         self.checkBox.clicked.connect(self.bypass_ip)
-
         self.pushButton.clicked.connect(self.check)
         self.pushButton_2.clicked.connect(self.search)
         self.pushButton_3.clicked.connect(self.one_shot)
-
-        self.lineEdit.textChanged.connect(self.account_changed)
-        self.lineEdit_2.textChanged.connect(self.account_changed_2)
-        self.lineEdit_3.textChanged.connect(self.account_changed_3)
-        self.lineEdit_4.textChanged.connect(self.account_changed_4)
-        self.lineEdit_5.textChanged.connect(self.account_changed_5)
-        self.lineEdit_6.textChanged.connect(self.account_changed_6)
-        self.lineEdit_7.textChanged.connect(self.account_changed_7)
-        self.lineEdit_8.textChanged.connect(self.account_changed_8)
-        self.lineEdit_9.textChanged.connect(self.account_changed_9)
-        self.lineEdit_10.textChanged.connect(self.account_changed_10)
-        self.lineEdit_11.textChanged.connect(self.account_changed_11)
-        self.lineEdit_12.textChanged.connect(self.account_changed_12)
 
     # 현재 시간 표시
     def timeout(self):
@@ -51,90 +37,125 @@ class QtDesigner(QMainWindow, form_class):
             #website.get('https://www.supremenewyork.com/shop')
             #website.save_screenshot('search_results.png')
 
+    # 찾고자 하는 물품 키워드 검색
+    def SearchKeyword(keywords, texts):
+        for i in keywords:
+            if i not in texts:
+                return False
+        return True
+
     # Search 버튼 클릭
-    def search(website, category, keywords, color):
-        website.get("http://www.supremenewyork.com/shop/all/" + category)
-        links = website.find_elements_by_class_name("name-link")
+    def search(self):
+        category = self.comboBox.currentText()
+        keyword = self.lineEdit_13.text()
+        color = self.lineEdit_14.text()
+        size = self.comboBox_2.currentText()
 
-    # 원 샷 버튼 클릭
-    def one_shot(self):
-        pass
-
-    # 텍스트 자동 완성
-    def account_changed(self, info):
-        self.info = self.lineEdit.text()
-    def account_changed_2(self, info_2):
-        self.info_2 = self.lineEdit_2.text()
-    def account_changed_3(self, info_3):
-        self.info_3 = self.lineEdit_3.text()
-    def account_changed_4(self, info_4):
-        self.info_4 = self.lineEdit_4.text()
-    def account_changed_5(self, info_5):
-        self.info_5 = self.lineEdit_5.text()
-    def account_changed_6(self, info_6):
-        self.info_6 = self.lineEdit_6.text()
-    def account_changed_7(self, info_7):
-        self.info_7 = self.lineEdit_7.text()
-    def account_changed_8(self, info_8):
-        self.info_8 = self.lineEdit_8.text()
-    def account_changed_9(self, info_9):
-        self.info_9 = self.lineEdit_9.text()
-    def account_changed_10(self, info_10):
-        self.info_10 = self.lineEdit_10.text()
-    def account_changed_11(self, info_11):
-        self.info_11 = self.lineEdit_11.text()
-    def account_changed_12(self, info_12):
-        self.info_12 = self.lineEdit_12.text()
-
-    # Check 버튼 클릭
-    def check(self):
         website = webdriver.PhantomJS('/Users/paramount/Downloads/phantomjs/bin/phantomjs')
         website.get('https://www.supremenewyork.com/shop')
 
         assert 'Supreme' in website.title
 
-        name = website.find_element_by_name("order[billing_name]")
-        name.send_keys(self.info)
+        website.get("http://www.supremenewyork.com/shop/all/" + category)
+        link = website.find_elements_by_class_name("name-link")
 
-        email = website.find_element_by_name("order[email]")
-        email.send_keys(self.info_2)
+        i = 0
+        while i < len(link):
+            if (SearchKeyword(keywords, link[i].text) & (color in link[i+1].text)):
+                #print("Texts : " + link[i].text)
+                #print("Color : " + link[i+1].text)
+                link[i].click()
+                return True
+            i += 2
+        return False
 
-        tel = website.find_element_by_name("order[tel]")
-        tel.send_keys(self.info_3)
+    	choose_a_size = Select(website.find_element_by_id('size'))
+    	choose_a_size.select_by_visible_text(self.size)
+    	sleep(0.5)
 
-        address = website.find_element_by_name("order[billing_address]")
-        address.send_keys(self.info_4)
+    	add_to_basket = website.find_element_by_name("commit")
+    	add_to_basket.click()
+    	sleep(0.5)
 
-        city = website.find_element_by_name("order[billing_city]")
-        city.send_keys(self.info_5)
+    	checkout = website.find_element_by_xpath('/html/body/div[2]/div/div[1]/div/a[2]')
+    	checkout.click()
+    	sleep(0.5)
 
-        postcode = website.find_element_by_name("order[billing_zip]")
-        postcode.send_keys(self.info_6)
+    # Check 버튼 클릭
+    def check(self):
+        #website = webdriver.PhantomJS('/Users/paramount/Downloads/phantomjs/bin/phantomjs')
+        #website.get('https://www.supremenewyork.com/shop')
 
-        postcode = Select(website.find_element_by_name("order[billing_country]"))
-        postcode.select_by_visible_text(self.info_7)
+        #assert 'Supreme' in website.title
 
-        cardtype = Select(website.find_element_by_name("credit_card[type]"))
-        cardtype.select_by_visible_text(self.info_8)
+        name = self.lineEdit.text()
+        email = self.lineEdit_2.text()
+        tel = self.lineEdit_3.text()
+        address = self.lineEdit_4.text()
+        city = self.lineEdit_5.text()
+        zip = self.lineEdit_6.text()
+        country = self.lineEdit_7.text()
+        type = self.lineEdit_8.text()
+        number = self.lineEdit_9.text()
+        month = self.lineEdit_10.text()
+        year = self.lineEdit_11.text()
+        cvc = self.lineEdit_12.text()
 
-        cardnumber = website.find_element_by_name("credit_card[cnb]")
-        cardnumber.send_keys(self.info_9)
+        element = website.find_element_by_name("order[billing_name]")
+        element.send_keys(name)
 
-        month = Select(website.find_element_by_name("credit_card[month]"))
-        month.select_by_visible_text(self.info_10)
+        element = website.find_element_by_name("order[email]")
+        element.send_keys(email)
 
-        year = Select(website.find_element_by_name("credit_card[year]"))
-        year.select_by_visible_text(self.info_11)
+        element = website.find_element_by_name("order[tel]")
+        element.send_keys(tel)
 
-        cvv = website.find_element_by_name("credit_card[vval]")
-        cvv.send_keys(self.info_12)
+        element = website.find_element_by_name("order[billing_address]")
+        element.send_keys(address)
+
+        element = website.find_element_by_name("order[billing_city]")
+        element.send_keys(city)
+
+        element = website.find_element_by_name("order[billing_zip]")
+        element.send_keys(zip)
+
+        element = Select(website.find_element_by_name("order[billing_country]"))
+        element.select_by_visible_text(country)
+
+        element = Select(website.find_element_by_name("credit_card[type]"))
+        element.select_by_visible_text(type)
+
+        element = website.find_element_by_name("credit_card[cnb]")
+        element.send_keys(number)
+
+        element = Select(website.find_element_by_name("credit_card[month]"))
+        element.select_by_visible_text(month)
+
+        element = Select(website.find_element_by_name("credit_card[year]"))
+        element.select_by_visible_text(year)
+
+        element = website.find_element_by_name("credit_card[vval]")
+        element.send_keys(cvc)
 
         website.find_element_by_class_name("terms").click()
 
-        #website.save_screenshot('search_results.png')
+        website.save_screenshot('check_screenshot.png')
+
+    # 원 샷 버튼 클릭
+    def one_shot(self):
+        self.search()
+        sleep(1)
+        self.check()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     QtDesigner = QtDesigner()
     QtDesigner.show()
     app.exec_()
+
+"""
+버려진 함수
+self.lineEdit.textChanged.connect(self.account_changed)
+def account_changed(self, info):
+    self.info = self.lineEdit.text()
+"""
