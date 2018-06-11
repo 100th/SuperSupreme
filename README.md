@@ -15,7 +15,7 @@
 - PhantomJS
 - Tor Browser
 
-## Module
+## Library
 - PyQt5
 - Selenium 
 
@@ -25,7 +25,6 @@
 ## Plan
 - Product Selection에서 원하는 제품 선택하면 링크가 자동으로 넘어가며 검색되도록
 - 제품 선택 후 결제까지 얼마나 걸리는지 테스트
-- Search와 Check 한 번에 할 수 있는 In one shot 기능 구현
 - 할 수 있다면 프로세스 진행 창 만들기
 
 ## Since
