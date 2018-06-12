@@ -5,6 +5,9 @@ from PyQt5.QtCore import *
 from PyQt5 import uic
 from time import sleep
 from selenium.webdriver.common.keys import Keys
+import datetime
+import requests
+from bs4 import BeautifulSoup
 
 form_class = uic.loadUiType("SuperSupreme.ui")[0]
 
@@ -38,35 +41,108 @@ class QtDesigner(QMainWindow, form_class):
             #website.get('https://www.supremenewyork.com/shop')
             #website.save_screenshot('search_results.png')
 
+
     # 찾고자 하는 물품 키워드 검색
-#    def SearchKeyword(keywords, texts):
-#        for i in keywords:
+#    def SearchKeyword(keyword, texts):
+#        for i in keyword:
 #            if i not in texts:
 #                return False
 #        return True
 
+#    	pageRequest = requests.get(category_url)
+#    	soup = BeautifulSoup(pageRequest.content, "html.parser")
+#    	links = soup.select("div.turbolink_scroller a")
+#    	select_item = soup.select("div.inner-article h1 a.name-link")
+
+#		pageRequest2 = requests.get('http://www.supremenewyork.com' + url)
+#		soup2 = BeautifulSoup(pageRequest2.content, "html.parser")
+#		itemName = soup2.find_all(itemprop="name")
+#		itemColour = soup2.find_all(class_="style")
+#		list1.append(itemName[0].text + ' ' + itemColour[0].text)
+#		nameOfProduct = (itemName[0].text)
+#		colourOfProduct = (itemColour[0].text)
+#		dictionary[nameOfProduct + ' ' + colourOfProduct] = url
+
     # Search 버튼 클릭
-    def search(self):
+    def search(self, link):
         category = self.comboBox.currentText()
         keyword = self.lineEdit_13.text()
         color = self.lineEdit_14.text()
         size = self.lineEdit_15.text()
 
-        if(keyword == ""):
-            QMessageBox.about(self, "Error Message", "Sorry. This item is sold out.")
-        else:
-            print(keyword)
+        website = webdriver.PhantomJS('/Users/paramount/Downloads/phantomjs/bin/phantomjs')
+        #website = webdriver.Chrome('/Users/paramount/Downloads/chromedriver')
+        website.get("http://www.supremenewyork.com/shop/all/" + category)
 
-        print(category)
-        print(color)
-        print(size)
+
+#       select_item = soup.select("div.inner-article h1 a.name-link")
+        soup = BeautifulSoup(html, 'lxml')
+        select_item1 = soup.find_all("div", {"class": "inner-article"})
+        select_item2 = select_item1.find_all('h1')
+        if keyword in select_item2:
+            select_item3 = selectitem1.find_all('p')
+            if color in select_item3:
+                select_item3.click()
+
+
+        website.save_screenshot('search_results.png')
+
+        #assert 'Supreme' in website.title
+
+#        link = website.find_elements_by_class_name('name-link')
+#        print(link)
+#        link.click()
+
+#        i = 0
+#        while i < len(link):
+#            if (SearchKeyword(color, link[i].text)):
+#                print("Color : " + link[i].text)
+#                link[i].click()
+#                print("[+] Article found")
+#               return True
+#            i += 2
+#        print("[-] Article not found")
+#        return False
+
+
+#       choose_a_size = Select(website.find_element_by_id('size'))
+#    	choose_a_size.select_by_visible_text(self.size)
+#       sleep(0.5)
+        if (size == ""):
+            QMessageBox.about(self, "Error Message", "Sorry. This size is not available.")
+
+#    	add_to_basket = website.find_element_by_name("commit")
+#    	add_to_basket.click()
+#    	sleep(0.5)
+
+#    	checkout = website.find_element_by_xpath('/html/body/div[2]/div/div[1]/div/a[2]')
+#    	checkout.click()
+#    	sleep(0.5)
+
+
+#    # Search 버튼 클릭
+#    def search(self):
+#        category = self.comboBox.currentText()
+#        keyword = self.lineEdit_13.text()
+#        color = self.lineEdit_14.text()
+#        size = self.lineEdit_15.text()
+#
+#        if(keyword == ""):
+#            QMessageBox.about(self, "Error Message", "Sorry. This  is sold out.")
+#        else:
+#            print(keyword)
+#
+#        print(category)
+#        print(color)
+#        print(size)
+
 
     # Check 버튼 클릭
     def check(self):
-        website = webdriver.PhantomJS('/Users/paramount/Downloads/phantomjs/bin/phantomjs')
-        website.get('https://okky.kr/user/register')
+#        website = webdriver.PhantomJS('/Users/paramount/Downloads/phantomjs/bin/phantomjs')
+#        website.get('https://okky.kr/user/register')
 
-        assert 'OKKY' in website.title
+#        assert 'OKKY' in website.title
 
         username = self.lineEdit.text()
         password = self.lineEdit_2.text()
