@@ -20,7 +20,7 @@
 - Selenium 
 
 ## Version
-> v0.2
+> v0.3
 
 ## Plan
 - Product Selection에서 원하는 제품 선택하면 링크가 자동으로 넘어가며 검색되도록
@@ -31,4 +31,4 @@
 > 2018.06.08 ~
 
 ## Sample Image
-![version](/image/v0.2.png)
+![version](/image/v0.3.png)
