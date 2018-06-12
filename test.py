@@ -39,21 +39,25 @@ class QtDesigner(QMainWindow, form_class):
             #website.save_screenshot('search_results.png')
 
     # 찾고자 하는 물품 키워드 검색
-    def SearchKeyword(keywords, texts):
-        for i in keywords:
-            if i not in texts:
-                return False
-        return True
+#    def SearchKeyword(keywords, texts):
+#        for i in keywords:
+#            if i not in texts:
+#                return False
+#        return True
 
     # Search 버튼 클릭
     def search(self):
         category = self.comboBox.currentText()
         keyword = self.lineEdit_13.text()
         color = self.lineEdit_14.text()
-        size = self.comboBox_2.currentText()
+        size = self.lineEdit_15.text()
+
+        if(keyword == ""):
+            QMessageBox.about(self, "Error Message", "Sorry. This item is sold out.")
+        else:
+            print(keyword)
 
         print(category)
-        print(keyword)
         print(color)
         print(size)
 

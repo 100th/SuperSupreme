@@ -70,19 +70,21 @@ class GetSupreme(QMainWindow, form_class):
 #                return True
 #            i += 2
 #        return False
-        
 
-    #   choose_a_size = Select(website.find_element_by_id('size'))
-    #	choose_a_size.select_by_visible_text(self.size)
-    #	sleep(0.5)
 
-    #	add_to_basket = website.find_element_by_name("commit")
-    #	add_to_basket.click()
-    #	sleep(0.5)
+        choose_a_size = Select(website.find_element_by_id('size'))
+    	choose_a_size.select_by_visible_text(self.size)
+    	sleep(0.5)
+        if (size == ""):
+            QMessageBox.about(self, "Error Message", "Sorry. This size is not available.")
 
-    #	checkout = website.find_element_by_xpath('/html/body/div[2]/div/div[1]/div/a[2]')
-    #	checkout.click()
-    #	sleep(0.5)
+    	add_to_basket = website.find_element_by_name("commit")
+    	add_to_basket.click()
+    	sleep(0.5)
+
+    	checkout = website.find_element_by_xpath('/html/body/div[2]/div/div[1]/div/a[2]')
+    	checkout.click()
+    	sleep(0.5)
 
     # Check 버튼 클릭
     def check(self):
@@ -139,10 +141,13 @@ class GetSupreme(QMainWindow, form_class):
 
         website.save_screenshot('check_screenshot.png')
 
+        # if 써서
+        QMessageBox.about(self, "Success Message", "Congratulation. We bought it successfully.")
+
     # 원 샷 버튼 클릭
     def one_shot(self):
         self.search()
-        sleep(1)
+        sleep(1)                # if 문 써서 해야할 듯
         self.check()
 
 if __name__ == "__main__":
@@ -150,6 +155,8 @@ if __name__ == "__main__":
     GetSupreme = GetSupreme()
     GetSupreme.show()
     app.exec_()
+    if (search(self) == False):
+        QMessageBox.about(self, "Error Message", "Sorry. We can't find this item on website.")
 
 """
 버려진 함수
