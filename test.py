@@ -41,108 +41,54 @@ class QtDesigner(QMainWindow, form_class):
             #website.get('https://www.supremenewyork.com/shop')
             #website.save_screenshot('search_results.png')
 
-
-    # 찾고자 하는 물품 키워드 검색
-#    def SearchKeyword(keyword, texts):
-#        for i in keyword:
-#            if i not in texts:
-#                return False
-#        return True
-
-#    	pageRequest = requests.get(category_url)
-#    	soup = BeautifulSoup(pageRequest.content, "html.parser")
-#    	links = soup.select("div.turbolink_scroller a")
-#    	select_item = soup.select("div.inner-article h1 a.name-link")
-
-#		pageRequest2 = requests.get('http://www.supremenewyork.com' + url)
-#		soup2 = BeautifulSoup(pageRequest2.content, "html.parser")
-#		itemName = soup2.find_all(itemprop="name")
-#		itemColour = soup2.find_all(class_="style")
-#		list1.append(itemName[0].text + ' ' + itemColour[0].text)
-#		nameOfProduct = (itemName[0].text)
-#		colourOfProduct = (itemColour[0].text)
-#		dictionary[nameOfProduct + ' ' + colourOfProduct] = url
-
     # Search 버튼 클릭
-    def search(self, link):
+    def search(self):
         category = self.comboBox.currentText()
         keyword = self.lineEdit_13.text()
         color = self.lineEdit_14.text()
         size = self.lineEdit_15.text()
 
         website = webdriver.PhantomJS('/Users/paramount/Downloads/phantomjs/bin/phantomjs')
-        #website = webdriver.Chrome('/Users/paramount/Downloads/chromedriver')
-        website.get("http://www.supremenewyork.com/shop/all/" + category)
+        #website = webdriver.Chrome('/Users/paramount/Downloads/chromedriver
+        url = "http://www.supremenewyork.com/shop/all/" + category
+#       website.get(url)
+        #site = requests.get(url)
+        #html = requests.get(url).text
+        site = website.get(url)
 
+    	if keyword in url:
+    		print('Found item!')
+    		html_soup(url)
 
-#       select_item = soup.select("div.inner-article h1 a.name-link")
-        soup = BeautifulSoup(html, 'lxml')
-        select_item1 = soup.find_all("div", {"class": "inner-article"})
-        select_item2 = select_item1.find_all('h1')
-        if keyword in select_item2:
-            select_item3 = selectitem1.find_all('p')
-            if color in select_item3:
-                select_item3.click()
+        #website.save_screenshot('search_results.png')
 
+    def html_soup(url):
+        soup = BeautifulSoup(url, "html.parser")
+        for div in soup.find_all('div', { "class" : "inner-article" }):
+            for a in div.find_all('a', href=True, text=True):
+                link = a['href']
+                print(link)
+            for a in div.find_all(['h1','p']):
+                if(a.name=='h1'):
+                    p_keyword = a.text
+                elif(a.name=='p'):
+                    p_color = a.text
 
-        website.save_screenshot('search_results.png')
-
-        #assert 'Supreme' in website.title
-
-#        link = website.find_elements_by_class_name('name-link')
-#        print(link)
-#        link.click()
-
-#        i = 0
-#        while i < len(link):
-#            if (SearchKeyword(color, link[i].text)):
-#                print("Color : " + link[i].text)
-#                link[i].click()
-#                print("[+] Article found")
-#               return True
-#            i += 2
-#        print("[-] Article not found")
-#        return False
-
-
-#       choose_a_size = Select(website.find_element_by_id('size'))
-#    	choose_a_size.select_by_visible_text(self.size)
-#       sleep(0.5)
-        if (size == ""):
-            QMessageBox.about(self, "Error Message", "Sorry. This size is not available.")
-
-#    	add_to_basket = website.find_element_by_name("commit")
-#    	add_to_basket.click()
-#    	sleep(0.5)
-
-#    	checkout = website.find_element_by_xpath('/html/body/div[2]/div/div[1]/div/a[2]')
-#    	checkout.click()
-#    	sleep(0.5)
-
-
-#    # Search 버튼 클릭
-#    def search(self):
-#        category = self.comboBox.currentText()
-#        keyword = self.lineEdit_13.text()
-#        color = self.lineEdit_14.text()
-#        size = self.lineEdit_15.text()
-#
-#        if(keyword == ""):
-#            QMessageBox.about(self, "Error Message", "Sorry. This  is sold out.")
-#        else:
-#            print(keyword)
-#
-#        print(category)
-#        print(color)
-#        print(size)
-
+            if(keyword in p_keyword and color == p_color):
+                website.visit(link)
+            	website.find_option_by_text(size).first.click()
+#                choose_a_size = Select(website.find_element_by_id('size'))
+#            	choose_a_size.select_by_visible_text(self.size)
+#                if (size == ""):
+#                    QMessageBox.about(self, "Error Message", "Sorry. This size is not available.")
+            	website.find_by_name('commit').click() #find_element_by_name
 
     # Check 버튼 클릭
     def check(self):
-#        website = webdriver.PhantomJS('/Users/paramount/Downloads/phantomjs/bin/phantomjs')
-#        website.get('https://okky.kr/user/register')
+        website = webdriver.PhantomJS('/Users/paramount/Downloads/phantomjs/bin/phantomjs')
+        website.get('https://www.supremenewyork.com/checkout')
 
-#        assert 'OKKY' in website.title
+        assert 'Supreme' in website.title
 
         username = self.lineEdit.text()
         password = self.lineEdit_2.text()

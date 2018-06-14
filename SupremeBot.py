@@ -5,6 +5,9 @@ from PyQt5.QtCore import *
 from PyQt5 import uic
 from time import sleep
 from selenium.webdriver.common.keys import Keys
+import datetime
+import requests
+from bs4 import BeautifulSoup
 
 form_class = uic.loadUiType("SuperSupreme.ui")[0]
 
@@ -34,17 +37,7 @@ class GetSupreme(QMainWindow, form_class):
         if self.checkBox.isChecked():
             service_args = [ '--proxy=localhost:9150', '--proxy-type=socks5', ]
             website = webdriver.PhantomJS(executable_path='/Users/paramount/Downloads/phantomjs/bin/phantomjs', service_args=service_args)
-            #website.get('https://www.supremenewyork.com/shop')
-            #website.save_screenshot('search_results.png')
-
-    """
-    # 찾고자 하는 물품 키워드 검색
-    def SearchKeyword(keywords, texts):
-        for i in keywords:
-            if i not in texts:
-                return False
-        return True
-    """
+            #website = webdriver.Chrome(executable_path='/Users/paramount/Downloads/chromedriver', service_args=service_args)
 
     # Search 버튼 클릭
     def search(self):
@@ -53,41 +46,54 @@ class GetSupreme(QMainWindow, form_class):
         color = self.lineEdit_14.text()
         size = self.lineEdit_15.text()
 
-        website = webdriver.PhantomJS('/Users/paramount/Downloads/phantomjs/bin/phantomjs')
-        website.get("http://www.supremenewyork.com/shop/all/" + category)
+        #website = webdriver.PhantomJS('/Users/paramount/Downloads/phantomjs/bin/phantomjs')
+        #website = webdriver.Chrome('/Users/paramount/Downloads/chromedriver')
+        url = "http://www.supremenewyork.com/shop/all/" + category
+        site = website.get(url)
+        website.get(url)
 
         assert 'Supreme' in website.title
 
-        link = website.find_elements_by_class_name("name-link")
+        html = requests.get(url).text
+        soup = BeautifulSoup(html, 'lxml')
 
+        for div in soup.find_all('div', { "class" : "inner-article" }):
+            p_keyword = ""
+            p_color = ""
+            link = ""
+            print("test")
+            for a in div.find_all('a', href=True, text=True):
+                link = a['href']
+                print("link")                                 #체크해보려고
+            for a in div.find_all(['h1','p']):
+                if(a.name=='h1'):
+                    p_keyword = a.text
+                    print("find 1")
+                elif(a.name=='p'):
+                    p_color = a.text
+                    print("find 2")
+                else:
+                    print("nothing")
 
-#        i = 0
-#        while i < len(link):
-#            if (SearchKeyword(keywords, link[i].text) & (color in link[i+1].text)):
-#                #print("Texts : " + link[i].text)
-#                #print("Color : " + link[i+1].text)
-#                link[i].click()
-#                return True
-#            i += 2
-#        return False
+            website.save_screenshot('soup_result.png')
 
-
-        choose_a_size = Select(website.find_element_by_id('size'))
-    	choose_a_size.select_by_visible_text(self.size)
-    	sleep(0.5)
-        if (size == ""):
-            QMessageBox.about(self, "Error Message", "Sorry. This size is not available.")
-
-    	add_to_basket = website.find_element_by_name("commit")
-    	add_to_basket.click()
-    	sleep(0.5)
-
-    	checkout = website.find_element_by_xpath('/html/body/div[2]/div/div[1]/div/a[2]')
-    	checkout.click()
-    	sleep(0.5)
+            if(keyword in p_keyword and color == p_color):
+                website.visit(link)
+            	#website.find_option_by_text(size).first.click()
+#               choose_a_size = Select(website.find_element_by_id('size'))
+#            	choose_a_size.select_by_visible_text(self.size)
+#               if (size == ""):
+#                    QMessageBox.about(self, "Error Message", "Sorry. This size is not available.")
+#            	website.find_by_name('commit').click()    #아니면 find_element_by_name
+        website.save_screenshot('searck_result2.png')
 
     # Check 버튼 클릭
     def check(self):
+        website = webdriver.PhantomJS('/Users/paramount/Downloads/phantomjs/bin/phantomjs')
+        website.get('http://www.supremenewyork.com/checkout')
+
+        assert 'Supreme' in website.title
+
         name = self.lineEdit.text()
         email = self.lineEdit_2.text()
         tel = self.lineEdit_3.text()
@@ -141,13 +147,15 @@ class GetSupreme(QMainWindow, form_class):
 
         website.save_screenshot('check_screenshot.png')
 
-        # if 써서
+        # if 써서?
         QMessageBox.about(self, "Success Message", "Congratulation. We bought it successfully.")
+
+        website.save_screenshot('check_result.png')
 
     # 원 샷 버튼 클릭
     def one_shot(self):
         self.search()
-        sleep(1)                # if 문 써서 해야할 듯
+        sleep(1)                # if 문 써서?
         self.check()
 
 if __name__ == "__main__":
@@ -155,8 +163,8 @@ if __name__ == "__main__":
     GetSupreme = GetSupreme()
     GetSupreme.show()
     app.exec_()
-    if (search(self) == False):
-        QMessageBox.about(self, "Error Message", "Sorry. We can't find this item on website.")
+#    if (search(self) == False):
+#        QMessageBox.about(self, "Error Message", "Sorry. We can't find this item on website.")
 
 """
 버려진 함수
