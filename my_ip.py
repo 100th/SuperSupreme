@@ -1,7 +1,6 @@
 from selenium import webdriver
 
-#driver = webdriver.Chrome('/Users/paramount/Downloads/chromedriver')
-driver = webdriver.PhantomJS('/Users/paramount/Downloads/phantomjs/bin/phantomjs')
+driver = webdriver.Firefox()
 
 driver.get('http://icanhazip.com/')
 

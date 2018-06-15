@@ -1,12 +1,13 @@
 import sys
+import datetime
+import requests
+import urllib.request
 from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5 import uic
 from time import sleep
-from selenium.webdriver.common.keys import Keys
-import datetime
-import requests
 from bs4 import BeautifulSoup
 
 form_class = uic.loadUiType("SuperSupreme.ui")[0]
@@ -35,9 +36,17 @@ class GetSupreme(QMainWindow, form_class):
     # IP 우회 접속 체크 박스
     def bypass_ip(self):
         if self.checkBox.isChecked():
-            service_args = [ '--proxy=localhost:9150', '--proxy-type=socks5', ]
-            website = webdriver.PhantomJS(executable_path='/Users/paramount/Downloads/phantomjs/bin/phantomjs', service_args=service_args)
+            #service_args = [ '--proxy=localhost:9150', '--proxy-type=socks5', ]
+            #website = webdriver.PhantomJS(executable_path='/Users/paramount/Downloads/phantomjs/bin/phantomjs', service_args=service_args)
             #website = webdriver.Chrome(executable_path='/Users/paramount/Downloads/chromedriver', service_args=service_args)
+            profile = webdriver.FirefoxProfile()
+            profile.set_preference("network.proxy.type", 1)
+            profile.set_preference("network.proxy.socks", "127.0.0.1")
+            profile.set_preference("network.proxy.socks_port", 9050)
+            profile.update_preferences()
+            website = webdriver.Firefox(executable_path="/Users/paramount/Downloads/geckodriver")
+            website.get('http://icanhazip.com/')
+            print(website.page_source)
 
     # Search 버튼 클릭
     def search(self):
@@ -51,20 +60,23 @@ class GetSupreme(QMainWindow, form_class):
         url = "http://www.supremenewyork.com/shop/all/" + category
         site = website.get(url)
         website.get(url)
+        print("Processing... 1")
 
         assert 'Supreme' in website.title
 
         html = requests.get(url).text
         soup = BeautifulSoup(html, 'lxml')
+        print("Processing... 2")
 
         for div in soup.find_all('div', { "class" : "inner-article" }):
             p_keyword = ""
             p_color = ""
             link = ""
-            print("test")
+            print("Processing... 3")
             for a in div.find_all('a', href=True, text=True):
                 link = a['href']
-                print("link")                                 #체크해보려고
+                print("link")                           #체크해보려고
+                print("Processing... 4")
             for a in div.find_all(['h1','p']):
                 if(a.name=='h1'):
                     p_keyword = a.text
