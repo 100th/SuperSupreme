@@ -1,5 +1,6 @@
 # SuperSupreme
 > Supreme Bot with Python
+> 이 프로그램은 해외에서 사용 가능하나 IP우회 접속이 불가능하여 한국에서는 사용 불가
 
 ## About
 ![logo](/image/logo.png)
@@ -17,15 +18,14 @@
 
 ## Library
 - PyQt5
-- Selenium 
+- Selenium
+- BeautifulSoup4
 
 ## Version
 > v0.3
 
 ## Plan
-- Product Selection에서 원하는 제품 선택하면 링크가 자동으로 넘어가며 검색되도록
 - 제품 선택 후 결제까지 얼마나 걸리는지 테스트
-- 할 수 있다면 프로세스 진행 창 만들기
 
 ## Since
 > 2018.06.08 ~
