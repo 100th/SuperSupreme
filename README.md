@@ -1,6 +1,5 @@
 # SuperSupreme
-> Supreme Bot with Python
-> 이 프로그램은 해외에서 사용 가능하나 IP우회 접속이 불가능하여 한국에서는 사용 불가
+> Supreme Bot with Python (개인 프로젝트)
 
 ## About
 ![logo](/image/logo.png)
@@ -21,14 +20,11 @@
 - Selenium
 - BeautifulSoup4
 
-## Version
-> v0.3
-
-## Plan
-- 제품 선택 후 결제까지 얼마나 걸리는지 테스트
+## Features
+> Selenium과 BeautifulSoup로 웹사이트에 자동 로그인하여 웹페이지 HTML 소스코드 분석하여 원하는 제품, 사이즈, 주소, 카드번호를 입력하여 최종 결제까지 이르게 하도록 만들었습니다.
 
 ## Since
-> 2018.06.08 ~
+> 2018.6.8 ~ 20018.6.18.
 
 ## Sample Image
 ![version](/image/v0.3.png)
